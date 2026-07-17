@@ -1,0 +1,68 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies (root and workspace packages)
+**/node_modules/
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+**/coverage/
+
+# Next.js
+/.next/
+/out/
+
+# build output
+/build
+/dist/
+/contract/dist/
+/contract/.midnight-preview/
+
+# tool caches
+/.compact/
+**/.turbo/
+**/.vite/
+**/.cache/
+.eslintcache
+.parcel-cache/
+.swc/
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# temporary files
+*.tmp
+*.temp
+/tmp/
+/.tmp/
+
+# credentials
+*.pem
+
+# logs and debug output
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local environment files
+.env*
+!.env*.example
+
+# vercel
+.vercel/
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
