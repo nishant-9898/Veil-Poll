@@ -1,0 +1,104 @@
+pragma language_version 0.23;
+
+import CompactStandardLibrary;
+
+// One deployed registry stores any number of polls. Poll IDs are random,
+// caller-generated values, so independent creators do not contend for a
+// global sequence number.
+export ledger pollIds: Set<Bytes<32>>;
+export ledger questions: Map<Bytes<32>, Opaque<"string">>;
+export ledger option0: Map<Bytes<32>, Opaque<"string">>;
+export ledger option1: Map<Bytes<32>, Opaque<"string">>;
+export ledger option2: Map<Bytes<32>, Opaque<"string">>;
+export ledger option3: Map<Bytes<32>, Opaque<"string">>;
+export ledger optionCounts: Map<Bytes<32>, Uint<8>>;
+export ledger creators: Map<Bytes<32>, Bytes<32>>;
+export ledger closedPolls: Set<Bytes<32>>;
+export ledger totalVotes: Map<Bytes<32>, Uint<64>>;
+export ledger votes0: Map<Bytes<32>, Uint<64>>;
+export ledger votes1: Map<Bytes<32>, Uint<64>>;
+export ledger votes2: Map<Bytes<32>, Uint<64>>;
+export ledger votes3: Map<Bytes<32>, Uint<64>>;
+export ledger usedNullifiers: Set<Bytes<32>>;
+
+witness localSecretKey(): Bytes<32>;
+
+constructor() {}
+
+export circuit createPoll(
+  pollId: Bytes<32>,
+  newQuestion: Opaque<"string">,
+  newOption0: Opaque<"string">,
+  newOption1: Opaque<"string">,
+  newOption2: Opaque<"string">,
+  newOption3: Opaque<"string">,
+  newOptionCount: Uint<8>
+): [] {
+  const publicPollId = disclose(pollId);
+  assert(!pollIds.member(publicPollId), "Poll ID already exists");
+  assert(newOptionCount >= 2 && newOptionCount <= 4, "Poll must have two to four options");
+
+  pollIds.insert(publicPollId);
+  questions.insert(publicPollId, disclose(newQuestion));
+  option0.insert(publicPollId, disclose(newOption0));
+  option1.insert(publicPollId, disclose(newOption1));
+  option2.insert(publicPollId, disclose(newOption2));
+  option3.insert(publicPollId, disclose(newOption3));
+  optionCounts.insert(publicPollId, disclose(newOptionCount));
+  creators.insert(publicPollId, disclose(creatorCommitment(localSecretKey(), publicPollId)));
+  totalVotes.insert(publicPollId, 0);
+  votes0.insert(publicPollId, 0);
+  votes1.insert(publicPollId, 0);
+  votes2.insert(publicPollId, 0);
+  votes3.insert(publicPollId, 0);
+}
+
+export circuit vote(pollId: Bytes<32>, choice: Uint<8>): [] {
+  const publicPollId = disclose(pollId);
+  assert(pollIds.member(publicPollId), "Poll does not exist");
+  assert(!closedPolls.member(publicPollId), "Poll is closed");
+  assert(choice < optionCounts.lookup(publicPollId), "Invalid poll option");
+
+  const nul = disclose(voteNullifier(localSecretKey(), publicPollId));
+  assert(!usedNullifiers.member(nul), "This private identity already voted");
+  usedNullifiers.insert(nul);
+
+  const publicChoice = disclose(choice);
+  if (publicChoice == 0) {
+    votes0.insert(publicPollId, (votes0.lookup(publicPollId) + 1) as Uint<64>);
+  } else if (publicChoice == 1) {
+    votes1.insert(publicPollId, (votes1.lookup(publicPollId) + 1) as Uint<64>);
+  } else if (publicChoice == 2) {
+    votes2.insert(publicPollId, (votes2.lookup(publicPollId) + 1) as Uint<64>);
+  } else {
+    votes3.insert(publicPollId, (votes3.lookup(publicPollId) + 1) as Uint<64>);
+  }
+  totalVotes.insert(publicPollId, (totalVotes.lookup(publicPollId) + 1) as Uint<64>);
+}
+
+export circuit closePoll(pollId: Bytes<32>): [] {
+  const publicPollId = disclose(pollId);
+  assert(pollIds.member(publicPollId), "Poll does not exist");
+  assert(!closedPolls.member(publicPollId), "Poll is already closed");
+  assert(
+    creators.lookup(publicPollId) == creatorCommitment(localSecretKey(), publicPollId),
+    "Only poll creator can close this poll"
+  );
+  closedPolls.insert(publicPollId);
+}
+
+export circuit voteNullifier(sk: Bytes<32>, pollId: Bytes<32>): Bytes<32> {
+  return persistentHash<Vector<3, Bytes<32>>>([
+    pad(32, "veilpoll:nullifier:v2"),
+    pollId,
+    sk
+  ]);
+}
+
+export circuit creatorCommitment(sk: Bytes<32>, pollId: Bytes<32>): Bytes<32> {
+  return persistentHash<Vector<3, Bytes<32>>>([
+    pad(32, "veilpoll:creator:v2"),
+    pollId,
+    sk
+  ]);
+}
