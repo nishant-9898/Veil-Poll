@@ -1,0 +1,2 @@
+export const VEILPOLL_CONTRACT_ADDRESS =
+  "93e91bf40350d2a9c39331af111a0960d01b7db20dd34764aed0e4104844a4dd" as const;
