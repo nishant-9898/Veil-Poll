@@ -1,0 +1,50 @@
+{
+  "name": "live-poll",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "npm run assets:sync",
+    "dev": "next dev --webpack",
+    "prebuild": "npm run assets:sync",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "contract:compile": "npm run compact --prefix contract",
+    "contract:deploy:preview": "npm run deploy:preview --prefix contract",
+    "assets:sync": "rm -rf public/midnight/keys public/midnight/zkir && mkdir -p public/midnight && cp -R contract/src/managed/poll/keys public/midnight/ && cp -R contract/src/managed/poll/zkir public/midnight/",
+    "verify": "npm run contract:compile && npm run assets:sync && npm run typecheck"
+  },
+  "dependencies": {
+    "@midnight-ntwrk/compact-js": "2.5.1",
+    "@midnight-ntwrk/compact-runtime": "0.16.0",
+    "@midnight-ntwrk/dapp-connector-api": "^4.0.1",
+    "@midnight-ntwrk/ledger-v8": "8.1.0",
+    "@midnight-ntwrk/midnight-js-contracts": "4.1.1",
+    "@midnight-ntwrk/midnight-js-fetch-zk-config-provider": "4.1.1",
+    "@midnight-ntwrk/midnight-js-indexer-public-data-provider": "4.1.1",
+    "@midnight-ntwrk/midnight-js-network-id": "4.1.1",
+    "@midnight-ntwrk/midnight-js-types": "4.1.1",
+    "@midnight-ntwrk/wallet-sdk-address-format": "3.1.2",
+    "buffer": "^6.0.3",
+    "next": "16.2.11",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.11",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  },
+  "overrides": {
+    "@midnight-ntwrk/compact-js": "2.5.1",
+    "postcss": "8.5.22",
+    "sharp": "0.35.3"
+  }
+}
