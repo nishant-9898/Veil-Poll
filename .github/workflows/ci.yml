@@ -21,8 +21,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: npm
-          cache-dependency-path: contract/package-lock.json
       - name: Install Compact
         uses: midnightntwrk/setup-compact-action@836895c8fffbbea6bd986af2b17e8941ff29d1f8
         with:
@@ -30,7 +28,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install contract dependencies
-        run: npm ci --prefix contract
+        run: npm install --no-package-lock --prefix contract
       - name: Compile contract
         run: npm run compact --prefix contract
       - name: Type-check contract bindings
@@ -48,9 +46,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: npm
-          cache-dependency-path: package-lock.json
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-package-lock
       - name: Type-check frontend
         run: npm run typecheck
