@@ -7,8 +7,8 @@ VeilPoll is a Midnight Preview polling app built around one fixed contract. Any 
 - Deployed app: https://veil-poll-sigma.vercel.app/
 - Demo video: https://drive.google.com/file/d/1AjilLCDCULXZzJIgwZxcixHgaHIn4-da/view?usp=sharing
 - Contract address: `93e91bf40350d2a9c39331af111a0960d01b7db20dd34764aed0e4104844a4dd`
-- Contract explorer link: `REPLACE_WITH_CONTRACT_EXPLORER_URL`
-- Contract deployment record: `REPLACE_WITH_DEPLOYMENT_JSON_OR_TX_LINK`
+- Contract explorer link: https://preview.midnightexplorer.com/contracts/0x93e91bf40350d2a9c39331af111a0960d01b7db20dd34764aed0e4104844a4dd
+- Contract deployment record: https://preview.midnightexplorer.com/transactions/0x144f6424698560b6f0231b3a4b7523fd0fdeca7596e907a058636b83c5486ffd
 
 ## Screenshots
 
@@ -18,25 +18,17 @@ Use this as the 2x2 screenshot grid for the repo or project page. Replace each b
   <tr>
     <td>
       <strong>Dashboard</strong><br />
-      <em>Replace with screenshot</em><br />
-      `docs/screenshots/dashboard.png`
+      <img width="1876" height="1005" alt="image" src="https://github.com/user-attachments/assets/3439d226-5a02-4114-8331-7f3b8fdb4efc" />
     </td>
     <td>
       <strong>Create poll</strong><br />
-      <em>Replace with screenshot</em><br />
-      `docs/screenshots/create-poll.png`
+     <img width="1876" height="1005" alt="image" src="https://github.com/user-attachments/assets/7fa75b8e-4b61-4720-9221-377e87874a2b" />
     </td>
   </tr>
   <tr>
     <td>
-      <strong>Vote flow</strong><br />
-      <em>Replace with screenshot</em><br />
-      `docs/screenshots/vote-flow.png`
-    </td>
-    <td>
-      <strong>Share / close</strong><br />
-      <em>Replace with screenshot</em><br />
-      `docs/screenshots/share-close.png`
+      <strong>CI</strong><br />
+      <img width="1876" height="1005" alt="image" src="https://github.com/user-attachments/assets/b079dbd8-b497-4846-8373-7b8a7b43b91f" />
     </td>
   </tr>
 </table>
