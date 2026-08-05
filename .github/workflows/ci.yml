@@ -31,6 +31,8 @@ jobs:
         run: npm install --no-package-lock --prefix contract
       - name: Compile contract
         run: npm run compact --prefix contract
+      - name: Run contract tests
+        run: npm test
       - name: Type-check contract bindings
         run: npm run typecheck --prefix contract
 

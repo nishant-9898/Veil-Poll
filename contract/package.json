@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "compact": "compact compile +0.31.1 src/poll.compact src/managed/poll",
+    "test": "node --import tsx --test src/poll.test.ts",
     "deploy:preview": "npm run compact && node --env-file-if-exists=.env.preview --import tsx src/deploy-preview.ts",
     "typecheck": "tsc --noEmit",
     "build": "npm run compact && npm run typecheck"

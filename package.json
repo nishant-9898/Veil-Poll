@@ -11,9 +11,10 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "contract:compile": "npm run compact --prefix contract",
+    "test": "npm run test --prefix contract",
     "contract:deploy:preview": "npm run deploy:preview --prefix contract",
     "assets:sync": "rm -rf public/midnight/keys public/midnight/zkir && mkdir -p public/midnight && cp -R contract/src/managed/poll/keys public/midnight/ && cp -R contract/src/managed/poll/zkir public/midnight/",
-    "verify": "npm run contract:compile && npm run assets:sync && npm run typecheck"
+    "verify": "npm run contract:compile && npm test && npm run assets:sync && npm run typecheck"
   },
   "dependencies": {
     "@midnight-ntwrk/compact-js": "2.5.1",

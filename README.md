@@ -1,5 +1,7 @@
 # VeilPoll
 
+[![CI](https://github.com/nishant-9898/Veil-Poll/actions/workflows/ci.yml/badge.svg)](https://github.com/nishant-9898/Veil-Poll/actions/workflows/ci.yml)
+
 VeilPoll is a Midnight Preview polling app built around one fixed contract. Any connected visitor can create unlimited polls, vote privately with 1AM, and share a poll link without exposing wallet identity on-chain.
 
 ## Links
@@ -9,10 +11,11 @@ VeilPoll is a Midnight Preview polling app built around one fixed contract. Any 
 - Contract address: `93e91bf40350d2a9c39331af111a0960d01b7db20dd34764aed0e4104844a4dd`
 - Contract explorer link: https://preview.midnightexplorer.com/contracts/0x93e91bf40350d2a9c39331af111a0960d01b7db20dd34764aed0e4104844a4dd
 - Contract deployment record: https://preview.midnightexplorer.com/transactions/0x144f6424698560b6f0231b3a4b7523fd0fdeca7596e907a058636b83c5486ffd
+- Product proposal: [PROPOSAL.md](./PROPOSAL.md)
 
 ## Screenshots
 
-Use this as the 2x2 screenshot grid for the repo or project page. Replace each box with the final image link when you have the screenshots ready.
+Project screens and automated verification evidence:
 
 <table>
   <tr>
@@ -29,6 +32,10 @@ Use this as the 2x2 screenshot grid for the repo or project page. Replace each b
     <td>
       <strong>CI</strong><br />
       <img width="1876" height="1005" alt="image" src="https://github.com/user-attachments/assets/b079dbd8-b497-4846-8373-7b8a7b43b91f" />
+    </td>
+    <td>
+      <strong>Contract tests: 3 passing</strong><br />
+      <img width="1200" height="520" alt="VeilPoll contract test output showing three passing tests" src="./docs/test-output.svg" />
     </td>
   </tr>
 </table>
@@ -140,6 +147,27 @@ Midnight fits this app because the app needs both public coordination and privat
 - 1AM gives the browser a practical way to prove and submit transactions.
 - The Preview network lets the app stay close to production-style flows while still being a development target.
 
+## Privacy Model
+
+VeilPoll uses selective disclosure. Private identity is used as a witness inside Compact circuits; public poll data and aggregate results remain auditable.
+
+### What an observer can learn
+
+- poll ID, question, choices, and number of enabled choices;
+- aggregate vote count for every choice and total turnout;
+- whether a poll is open or closed;
+- one-way creator commitments and vote nullifiers;
+- transaction timing and the counter changed by a transaction, which may reveal that transaction's selected option.
+
+### What an observer cannot learn from contract state
+
+- participant wallet address or local secret key;
+- creator secret key behind the poll-scoped creator commitment;
+- identity behind a vote nullifier;
+- whether nullifiers from different polls came from the same private identity.
+
+Each nullifier is `persistentHash(domain, pollId, localSecretKey)`. Same identity therefore cannot vote twice in one poll, but gets an unlinkable nullifier for another poll. This version provides anonymous participation, not coercion resistance or fully hidden choices: public tally changes can expose a selection through transaction-level analysis.
+
 ## Preview Services
 
 - RPC: `https://rpc.preview.midnight.network`
@@ -164,6 +192,7 @@ Generated ZK assets live in `contract/src/managed/poll` and sync to `public/midn
 
 ```bash
 npm run contract:compile
+npm test
 npm run assets:sync
 npm run typecheck --prefix contract
 npm run typecheck
@@ -173,10 +202,13 @@ npm audit --omit=dev
 npm audit --prefix contract --omit=dev
 ```
 
+`npm test` runs three generated-contract tests covering circuit validation, ledger state transitions, creator authorization, poll-scoped nullifiers, duplicate-vote prevention, and cross-poll unlinkability. CI compiles the Compact contract before running the same suite on every push and pull request.
+
 ## Project Layout
 
 ```text
 contract/src/poll.compact       Multi-poll registry contract
+contract/src/poll.test.ts       Compact circuit and privacy tests
 app/poll-app.tsx                Dashboard and poll voting UI
 app/deploy/deploy-client.tsx    Create-poll page for the fixed contract
 lib/midnight/client.ts          1AM Preview providers

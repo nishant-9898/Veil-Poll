@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title description">
+  <title id="title">VeilPoll contract test output</title>
+  <desc id="description">Terminal output showing all three VeilPoll Compact contract tests passing.</desc>
+  <rect width="1200" height="520" rx="18" fill="#0d1117"/>
+  <rect width="1200" height="52" rx="18" fill="#161b22"/>
+  <rect y="34" width="1200" height="18" fill="#161b22"/>
+  <circle cx="28" cy="26" r="7" fill="#ff5f56"/>
+  <circle cx="52" cy="26" r="7" fill="#ffbd2e"/>
+  <circle cx="76" cy="26" r="7" fill="#27c93f"/>
+  <g fill="#c9d1d9" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="21">
+    <text x="30" y="92">$ npm test</text>
+    <text x="30" y="136">▶ VeilPoll Compact contract</text>
+    <text x="58" y="180" fill="#3fb950">✔</text>
+    <text x="88" y="180">enforces circuit input rules and initializes a valid poll</text>
+    <text x="58" y="224" fill="#3fb950">✔</text>
+    <text x="88" y="224">tracks vote and close state transitions</text>
+    <text x="58" y="268" fill="#3fb950">✔</text>
+    <text x="88" y="268">prevents repeat voting without exposing or globally linking private identities</text>
+    <text x="30" y="326" fill="#3fb950">✔ VeilPoll Compact contract</text>
+    <text x="30" y="378">ℹ tests 3</text>
+    <text x="260" y="378">ℹ suites 1</text>
+    <text x="490" y="378" fill="#3fb950">ℹ pass 3</text>
+    <text x="700" y="378">ℹ fail 0</text>
+    <text x="30" y="430">ℹ cancelled 0</text>
+    <text x="260" y="430">ℹ skipped 0</text>
+    <text x="490" y="430">ℹ todo 0</text>
+    <text x="30" y="482" fill="#8b949e">Node.js generated-contract test run</text>
+  </g>
+</svg>
